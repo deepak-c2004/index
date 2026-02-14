@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Big Sample HTML Page</title>
+  <meta name="description" content="A big sample HTML page with layout, components, forms, tables, modal, and minimal JS." />
+
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#111a33;
+      --muted:#9db0ff;
+      --text:#e8ecff;
+      --accent:#6aa3ff;
+      --accent2:#9dffcc;
+      --danger:#ff6a6a;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:18px;
+      --max:1100px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 5%, rgba(106,163,255,.22), transparent 55%),
+        radial-gradient(900px 600px at 90% 20%, rgba(157,255,204,.13), transparent 55%),
+        radial-gradient(800px 500px at 50% 100%, rgba(255,106,106,.10), transparent 60%),
+        var(--bg);
+      line-height:1.45;
+    }
+    a{color:inherit}
+    .container{max-width:var(--max); margin:0 auto; padding:0 18px;}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      backdrop-filter: blur(10px);
+    }
+    .btn{
+      border:0;
+      background:linear-gradient(135deg, var(--accent), #7f77ff);
+      color:#081028;
+      font-weight:700;
+      padding:12px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      box-shadow: 0 12px 20px rgba(106,163,255,.18);
+      transition: transform .12s ease, filter .12s ease;
+    }
+    .btn:hover{transform:translateY(-1px); filter:brightness(1.05)}
+    .btn:active{transform:translateY(0px); filter:brightness(.98)}
+    .btn.secondary{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+      border:1px solid rgba(255,255,255,.14);
+      box-shadow:none;
+    }
+    .btn.danger{
+      background:linear-gradient(135deg, var(--danger), #ffb36a);
+      color:#2a0c0c;
+      box-shadow: 0 12px 20px rgba(255,106,106,.14);
+    }
+    .grid{display:grid; gap:16px}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .card .pad{padding:18px}
+    .muted{color:rgba(232,236,255,.72)}
+    .tiny{font-size:.9rem}
+    .kpi{
+      display:flex; align-items:flex-start; gap:12px;
+      padding:14px;
+      border-radius:16px;
+      background:rgba(17,26,51,.8);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .icon{
+      width:42px; height:42px;
+      border-radius:14px;
+      display:grid; place-items:center;
+      background:rgba(106,163,255,.18);
+      border:1px solid rgba(106,163,255,.25);
+      flex:0 0 auto;
+      font-size:20px;
+    }
+
+    /* Header */
+    header{
+      position:sticky; top:0; z-index:30;
+      background:rgba(11,16,32,.6);
+      backdrop-filter: blur(14px);
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 0;
+      gap:12px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; text-decoration:none;
+      font-weight:900; letter-spacing:.2px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:14px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 24px rgba(106,163,255,.22);
+    }
+    nav ul{
+      margin:0; padding:0; list-style:none;
+      display:flex; gap:12px; flex-wrap:wrap;
+      align-items:center;
+    }
+    nav a{
+      text-decoration:none;
+      padding:10px 12px;
+      border-radius:12px;
+      color:rgba(232,236,255,.85);
+      transition: background .12s ease;
+    }
+    nav a:hover{background:rgba(255,255,255,.07)}
+    .right{
+      display:flex; align-items:center; gap:10px;
+    }
+    .search{
+      display:flex; align-items:center; gap:8px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      min-width:240px;
+    }
+    .search input{
+      border:0; outline:0; background:transparent;
+      color:var(--text); width:100%;
+    }
+    .search input::placeholder{color:rgba(232,236,255,.55)}
+
+    /* Hero */
+    .hero{padding:26px 0 10px}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    .hero h1{
+      margin:10px 0 8px;
+      font-size: clamp(28px, 3.4vw, 44px);
+      line-height:1.05;
+      letter-spacing:-.5px;
+    }
+    .hero p{margin:0 0 14px; color:rgba(232,236,255,.74)}
+    .hero .actions{display:flex; gap:10px; flex-wrap:wrap}
+    .heroArt{
+      height:100%;
+      background:
+        radial-gradient(200px 200px at 20% 25%, rgba(106,163,255,.45), transparent 60%),
+        radial-gradient(260px 260px at 70% 65%, rgba(157,255,204,.20), transparent 60%),
+        radial-gradient(420px 300px at 50% 110%, rgba(255,106,106,.20), transparent 60%),
+        rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+    }
+    .heroArt .chip{
+      position:absolute;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(11,16,32,.55);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(10px);
+      display:flex; align-items:center; gap:10px;
+      box-shadow: 0 12px 24px rgba(0,0,0,.25);
+    }
+    .chip strong{display:block; font-size:1rem}
+    .chip span{display:block; font-size:.9rem; color:rgba(232,236,255,.68)}
+    .chip.one{top:18px; left:18px}
+    .chip.two{bottom:18px; left:18px}
+    .chip.three{top:50%; right:18px; transform:translateY(-50%)}
+
+    /* Sections */
+    section{padding:18px 0}
+    .sectionTitle{
+      display:flex; align-items:flex-end; justify-content:space-between;
+      gap:12px; margin:10px 0 12px;
+    }
+    .sectionTitle h2{margin:0; font-size:1.5rem}
+    .sectionTitle p{margin:0; color:rgba(232,236,255,.65)}
+
+    /* Feature cards */
+    .features{grid-template-columns: repeat(3, 1fr)}
+    .featureTitle{display:flex; align-items:center; gap:10px; margin:0 0 6px}
+    .tagRow{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+    .tag{
+      font-size:.85rem;
+      color:rgba(232,236,255,.8);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.06);
+      padding:6px 10px; border-radius:999px;
+    }
+
+    /* Table */
+    table{width:100%; border-collapse:collapse; overflow:hidden; border-radius:14px}
+    thead th{
+      text-align:left;
+      padding:12px;
+      background:rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.10);
+      font-size:.92rem;
+      color:rgba(232,236,255,.85);
+    }
+    tbody td{
+      padding:12px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      color:rgba(232,236,255,.82);
+      font-size:.95rem;
+    }
+    tbody tr:hover{background:rgba(255,255,255,.04)}
+    .status{
+      display:inline-flex; align-items:center; gap:8px;
+      font-size:.85rem; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+    }
+    .dot{width:8px; height:8px; border-radius:99px; background:var(--accent2)}
+    .dot.warn{background:#ffd36a}
+    .dot.bad{background:var(--danger)}
+
+    /* Pricing */
+    .pricing{grid-template-columns: repeat(3, 1fr)}
+    .price{
+      font-size:2rem; font-weight:900; letter-spacing:-.6px;
+      margin:0 0 8px;
+    }
+    .price small{font-size:.9rem; font-weight:600; color:rgba(232,236,255,.65)}
+    .list{margin:10px 0 0; padding:0; list-style:none}
+    .list li{display:flex; gap:10px; padding:8px 0; color:rgba(232,236,255,.78)}
+    .list li .check{color:var(--accent2)}
+
+    /* FAQ */
+    details{
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+    details + details{margin-top:10px}
+    summary{
+      cursor:pointer;
+      font-weight:800;
+      list-style:none;
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+    }
+    summary::-webkit-details-marker{display:none}
+    details p{margin:10px 0 0; color:rgba(232,236,255,.72)}
+
+    /* Gallery */
+    .gallery{grid-template-columns: repeat(4, 1fr)}
+    .thumb{
+      aspect-ratio: 4 / 3;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background:
+        radial-gradient(180px 120px at 30% 30%, rgba(106,163,255,.35), transparent 60%),
+        radial-gradient(180px 120px at 70% 70%, rgba(157,255,204,.18), transparent 60%),
+        rgba(255,255,255,.05);
+      position:relative;
+      overflow:hidden;
+    }
+    .thumb span{
+      position:absolute; left:12px; bottom:12px;
+      background:rgba(11,16,32,.6);
+      border:1px solid rgba(255,255,255,.12);
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.85rem;
+      color:rgba(232,236,255,.82);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Form */
+    form{display:grid; gap:12px}
+    .row{display:grid; grid-template-columns: 1fr 1fr; gap:12px}
+    label{display:block; font-weight:700; margin-bottom:6px}
+    input, select, textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:120px; resize:vertical}
+    .help{color:rgba(232,236,255,.6); font-size:.9rem}
+
+    /* Footer */
+    footer{
+      padding:20px 0 36px;
+      border-top:1px solid rgba(255,255,255,.10);
+      margin-top:20px;
+      color:rgba(232,236,255,.7);
+    }
+    .footerGrid{display:grid; grid-template-columns: 1.5fr 1fr 1fr; gap:14px}
+    .footerGrid a{color:rgba(232,236,255,.75); text-decoration:none}
+    .footerGrid a:hover{text-decoration:underline}
+
+    /* Modal */
+    .backdrop{
+      position:fixed; inset:0; display:none;
+      background:rgba(0,0,0,.55);
+      backdrop-filter: blur(8px);
+      z-index:40;
+    }
+    .modal{
+      max-width:620px;
+      margin:10vh auto;
+      background:rgba(17,26,51,.92);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .modal header{
+      position:static;
+      background:transparent;
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .modal .body{padding:16px 18px}
+    .modal .closeRow{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 18px;
+    }
+
+    /* Toast */
+    .toast{
+      position:fixed; bottom:16px; right:16px;
+      display:none;
+      padding:12px 14px;
+      background:rgba(17,26,51,.92);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:16px;
+      box-shadow: var(--shadow);
+      z-index:60;
+      max-width:320px;
+    }
+
+    /* Responsive */
+    @media (max-width: 950px){
+      .heroGrid{grid-template-columns: 1fr}
+      .features{grid-template-columns: 1fr 1fr}
+      .pricing{grid-template-columns: 1fr}
+      .gallery{grid-template-columns: 1fr 1fr}
+      .footerGrid{grid-template-columns: 1fr}
+      .search{min-width: 160px}
+    }
+    @media (max-width: 560px){
+      .features{grid-template-columns: 1fr}
+      .gallery{grid-template-columns: 1fr}
+      .row{grid-template-columns: 1fr}
+      nav ul{gap:6px}
+      nav a{padding:8px 10px}
+      .search{display:none}
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container topbar">
+      <a class="brand" href="#top" aria-label="Go to top">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div style="font-size:1.05rem;">Nebula UI</div>
+          <div class="muted tiny">Big sample HTML</div>
+        </div>
+      </a>
+
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#dashboard">Dashboard</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="right">
+        <div class="search" role="search" aria-label="Search">
+          🔎 <input id="searchInput" placeholder="Search sections…" />
+        </div>
+        <button class="btn secondary" id="openModalBtn" type="button">Open modal</button>
+        <button class="btn" id="toastBtn" type="button">Show toast</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container heroGrid">
+        <div class="card">
+          <div class="pad">
+            <span class="pill">🛡️ Accessible • 📱 Responsive • ⚡ Minimal JS</span>
+            <h1>One big sample HTML page<br/>for testing layouts & components.</h1>
+            <p>
+              This file includes common UI patterns: cards, table, gallery, pricing, FAQ accordion,
+              contact form, modal, toast notifications, and a tiny search filter.
+            </p>
+            <div class="actions">
+              <a class="btn" href="#features">Explore features</a>
+              <button class="btn secondary" id="scrollDashboard" type="button">Jump to dashboard</button>
+              <button class="btn danger" id="randomizeBtn" type="button">Randomize KPIs</button>
+            </div>
+
+            <div class="tagRow" aria-label="Tags">
+              <span class="tag">HTML</span>
+              <span class="tag">CSS</span>
+              <span class="tag">JS</span>
+              <span class="tag">Components</span>
+              <span class="tag">Demo</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="heroArt" aria-label="Decorative hero art">
+          <div class="chip one">
+            <div class="icon" aria-hidden="true">🧩</div>
+            <div>
+              <strong>Modular sections</strong>
+              <span>Copy & paste easily</span>
+            </div>
+          </div>
+          <div class="chip three">
+            <div class="icon" aria-hidden="true">📊</div>
+            <div>
+              <strong>Dashboard widgets</strong>
+              <span>Table + KPI cards</span>
+            </div>
+          </div>
+          <div class="chip two">
+            <div class="icon" aria-hidden="true">🗂️</div>
+            <div>
+              <strong>Forms & modal</strong>
+              <span>Includes validation</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features">
+      <div class="container">
+        <div class="sectionTitle">
+          <h2>Features</h2>
+          <p>Simple components you can reuse.</p>
+        </div>
+
+        <div class="grid features">
+          <article class="card">
+            <div class="pad">
+              <div class="featureTitle">
+                <div class="icon">🧠</div>
+                <h3 style="margin:0">Smart layout</h3>
+              </div>
+              <p class="muted">Responsive grid that collapses cleanly on smaller screens.</p>
+              <div class="tagRow">
+                <span class="tag">Grid</span><span class="tag">Cards</span><span class="tag">Sticky header</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="pad">
+              <div class="featureTitle">
+                <div class="icon">🔐</div>
+                <h3 style="margin:0">Accessibility hints</h3>
+              </div>
+              <p class="muted">Uses aria-labels, semantic tags, and keyboard-friendly controls.</p>
+              <div class="tagRow">
+                <span class="tag">ARIA</span><span class="tag">Semantics</span><span class="tag">Focus</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="pad">
+              <div class="featureTitle">
+                <div class="icon">🧪</div>
+                <h3 style="margin:0">Interactive bits</h3>
+              </div>
+              <p class="muted">Modal, toast, search filtering, and small KPI randomizer.</p>
+              <div class="tagRow">
+                <span class="tag">Modal</span><span class="tag">Toast</span><span class="tag">Search</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="dashboard">
+      <div class="container">
+        <div class="sectionTitle">
+          <h2>Dashboard</h2>
+          <p>KPIs + a simple table.</p>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+          <div class="kpi">
+            <div class="icon">⚡</div>
+            <div>
+              <div class="muted tiny">Requests / min</div>
+              <div id="kpi1" style="font-size:1.35rem; font-weight:900;">1,280</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <div class="icon">🧱</div>
+            <div>
+              <div class="muted tiny">Build success</div>
+              <div id="kpi2" style="font-size:1.35rem; font-weight:900;">98.4%</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <div class="icon">🛰️</div>
+            <div>
+              <div class="muted tiny">Latency (p95)</div>
+              <div id="kpi3" style="font-size:1.35rem; font-weight:900;">143ms</div>
+            </div>
+          </div>
+          <div class="kpi">
+            <div class="icon">💾</div>
+            <div>
+              <div class="muted tiny">Storage</div>
+              <div id="kpi4" style="font-size:1.35rem; font-weight:900;">72%</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:14px"></div>
+
+        <div class="card">
+          <div class="pad" style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap">
+            <div>
+              <h3 style="margin:0 0 4px;">Service Status</h3>
+              <div class="muted tiny">Search box (top right) filters by service name.</div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap">
+              <button class="btn secondary" id="markAllHealthy" type="button">Mark all healthy</button>
+              <button class="btn danger" id="simulateIncident" type="button">Simulate incident</button>
+            </div>
+          </div>
+
+          <div class="pad" style="padding-top:0">
+            <table aria-label="Service status table">
+              <thead>
+                <tr>
+                  <th>Service</th>
+                  <th>Region</th>
+                  <th>Uptime</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="serviceTable">
+                <tr>
+                  <td>auth-api</td><td>ap-south-1</td><td>99.99%</td>
+                  <td><span class="status"><span class="dot"></span>Healthy</span></td>
+                </tr>
+                <tr>
+                  <td>payments</td><td>ap-south-1</td><td>99.92%</td>
+                  <td><span class="status"><span class="dot warn"></span>Degraded</span></td>
+                </tr>
+                <tr>
+                  <td>web-frontend</td><td>us-east-1</td><td>99.97%</td>
+                  <td><span class="status"><span class="dot"></span>Healthy</span></td>
+                </tr>
+                <tr>
+                  <td>image-worker</td><td>eu-west-1</td><td>99.84%</td>
+                  <td><span class="status"><span class="dot warn"></span>Degraded</span></td>
+                </tr>
+                <tr>
+                  <td>analytics</td><td>us-west-2</td><td>99.70%</td>
+                  <td><span class="status"><span class="dot bad"></span>Incident</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section id="gallery">
+      <div class="container">
+        <div class="sectionTitle">
+          <h2>Gallery</h2>
+          <p>Placeholder thumbnails (no external images).</p>
+        </div>
+
+        <div class="grid gallery">
+          <div class="thumb"><span>Card 01</span></div>
+          <div class="thumb"><span>Card 02</span></div>
+          <div class="thumb"><span>Card 03</span></div>
+          <div class="thumb"><span>Card 04</span></div>
+          <div class="thumb"><span>Card 05</span></div>
+          <div class="thumb"><span>Card 06</span></div>
+          <div class="thumb"><span>Card 07</span></div>
+          <div class="thumb"><span>Card 08</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing">
+      <div class="container">
+        <div class="sectionTitle">
+          <h2>Pricing</h2>
+          <p>Three-tier cards layout.</p>
+        </div>
+
+        <div class="grid pricing">
+          <article class="card">
+            <div class="pad">
+              <h3 style="margin:0 0 6px;">Starter</h3>
+              <p class="price">₹0 <small>/ month</small></p>
+              <p class="muted">For testing and learning.</p>
+              <ul class="list">
+                <li><span class="check">✅</span> Basic components</li>
+                <li><span class="check">✅</span> Single page</li>
+                <li><span class="check">✅</span> No dependencies</li>
+              </ul>
+              <div style="height:12px"></div>
+              <button class="btn secondary" type="button">Choose Starter</button>
+            </div>
+          </article>
+
+          <article class="card" style="border-color:rgba(106,163,255,.35)">
+            <div class="pad">
+              <span class="pill" style="margin-bottom:10px">⭐ Popular</span>
+              <h3 style="margin:0 0 6px;">Pro</h3>
+              <p class="price">₹499 <small>/ month</small></p>
+              <p class="muted">For small projects and portfolios.</p>
+              <ul class="list">
+                <li><span class="check">✅</span> Everything in Starter</li>
+                <li><span class="check">✅</span> Modals + toasts</li>
+                <li><span class="check">✅</span> Dashboard section</li>
+              </ul>
+              <div style="height:12px"></div>
+              <button class="btn" type="button">Choose Pro</button>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="pad">
+              <h3 style="margin:0 0 6px;">Team</h3>
+              <p class="price">₹1999 <small>/ month</small></p>
+              <p class="muted">For teams that want more structure.</p>
+              <ul class="list">
+                <li><span class="check">✅</span> Everything in Pro</li>
+                <li><span class="check">✅</span> Priority support</li>
+                <li><span class="check">✅</span> Custom sections</li>
+              </ul>
+              <div style="height:12px"></div>
+              <button class="btn secondary" type="button">Choose Team</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq">
+      <div class="container">
+        <div class="sectionTitle">
+          <h2>FAQ</h2>
+          <p>Accordion using native &lt;details&gt;.</p>
+        </div>
+
+        <details>
+          <summary>
+            Can I use this as a template?
+            <span class="muted">+</span>
+          </summary>
+          <p>Yep. Replace sections, colors, and content. It’s meant to be a big playground.</p>
+        </details>
+
+        <details>
+          <summary>
+            Why no external libraries?
+            <span class="muted">+</span>
+          </summary>
+          <p>So you can test quickly without setup. If you want, you can later move this into React/Vue/etc.</p>
+        </details>
+
+        <details>
+          <summary>
+            How does the search work?
+            <span class="muted">+</span>
+          </summary>
+          <p>The search filters the table rows based on the service name. Simple demo logic in JS.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="sectionTitle">
+          <h2>Contact</h2>
+          <p>Form + basic validation demo.</p>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 1.1fr .9fr;">
+          <div class="card">
+            <div class="pad">
+              <form id="contactForm" novalidate>
+                <div class="row">
+                  <div>
+                    <label for="name">Name</label>
+                    <input id="name" name="name" placeholder="Your name" required />
+                    <div class="help">Required</div>
+                  </div>
+                  <div>
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" placeholder="you@example.com" required />
+                    <div class="help">Required</div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div>
+                    <label for="topic">Topic</label>
+                    <select id="topic" name="topic">
+                      <option value="general">General</option>
+                      <option value="bug">Bug report</option>
+                      <option value="feature">Feature request</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="priority">Priority</label>
+                    <select id="priority" name="priority">
+                      <option value="low">Low</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label for="message">Message</label>
+                  <textarea id="message" name="message" placeholder="Write something..." required></textarea>
+                  <div class="help">Tip: Try leaving it empty and submit 😄</div>
+                </div>
+
+                <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                  <button class="btn" type="submit">Send message</button>
+                  <button class="btn secondary" type="reset">Reset</button>
+                </div>
+
+                <p id="formStatus" class="muted tiny" aria-live="polite" style="margin:10px 0 0;"></p>
+              </form>
+            </div>
+          </div>
+
+          <aside class="card">
+            <div class="pad">
+              <h3 style="margin:0 0 8px;">Info panel</h3>
+              <p class="muted">This is a sidebar card with extra content.</p>
+
+              <div class="kpi" style="margin-top:12px;">
+                <div class="icon">📍</div>
+                <div>
+                  <div class="muted tiny">Location</div>
+                  <div style="font-weight:900;">Chennai, IN</div>
+                </div>
+              </div>
+
+              <div class="kpi" style="margin-top:12px;">
+                <div class="icon">⏱️</div>
+                <div>
+                  <div class="muted tiny">Typical reply</div>
+                  <div style="font-weight:900;">Within 24h</div>
+                </div>
+              </div>
+
+              <div style="height:12px"></div>
+              <button class="btn secondary" id="copyDemoBtn" type="button">Copy demo text</button>
+              <p class="muted tiny" id="copyStatus" style="margin:10px 0 0;"></p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footerGrid">
+      <div>
+        <div class="pill" style="margin-bottom:10px;">🧙‍♂️ Built for experimentation</div>
+        <p class="muted">
+          Single-file demo layout. You can split it into components, add real images, or connect APIs.
+        </p>
+        <p class="muted tiny">© <span id="year"></span> Nebula UI</p>
+      </div>
+
+      <div>
+        <h4 style="margin:0 0 8px;">Links</h4>
+        <div class="grid" style="gap:8px">
+          <a href="#features">Features</a>
+          <a href="#dashboard">Dashboard</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="margin:0 0 8px;">Actions</h4>
+        <div class="grid" style="gap:8px">
+          <button class="btn secondary" id="backToTop" type="button">Back to top</button>
+          <button class="btn" id="openModalBtn2" type="button">Open modal</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="backdrop" id="backdrop" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header>
+        <div class="closeRow">
+          <div>
+            <div id="modalTitle" style="font-weight:900; font-size:1.1rem;">Demo Modal</div>
+            <div class="muted tiny">Press Escape or click outside to close.</div>
+          </div>
+          <button class="btn secondary" id="closeModalBtn" type="button">Close</button>
+        </div>
+      </header>
+      <div class="body">
+        <p class="muted">
+          This modal is controlled by a tiny bit of JavaScript. You can put anything here:
+          forms, confirmations, images, or even a mini login box.
+        </p>
+        <div class="card" style="background:rgba(255,255,255,.05); box-shadow:none">
+          <div class="pad">
+            <h4 style="margin:0 0 6px;">Quick settings</h4>
+            <div class="row">
+              <div>
+                <label for="mode">Theme mode</label>
+                <select id="mode">
+                  <option value="default" selected>Default</option>
+                  <option value="high-contrast">High contrast</option>
+                </select>
+              </div>
+              <div>
+                <label for="density">Density</label>
+                <select id="density">
+                  <option value="comfortable" selected>Comfortable</option>
+                  <option value="compact">Compact</option>
+                </select>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <button class="btn" id="saveSettingsBtn" type="button">Save</button>
+              <button class="btn secondary" id="resetSettingsBtn" type="button">Reset</button>
+            </div>
+            <p class="muted tiny" id="settingsStatus" style="margin:10px 0 0;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // Small helper
+    const $ = (sel) => document.querySelector(sel);
+
+    // Elements
+    const yearEl = $("#year");
+    const searchInput = $("#searchInput");
+    const serviceTable = $("#serviceTable");
+    const openModalBtn = $("#openModalBtn");
+    const openModalBtn2 = $("#openModalBtn2");
+    const closeModalBtn = $("#closeModalBtn");
+    const backdrop = $("#backdrop");
+    const toastBtn = $("#toastBtn");
+    const toastEl = $("#toast");
+    const scrollDashboardBtn = $("#scrollDashboard");
+    const backToTopBtn = $("#backToTop");
+    const randomizeBtn = $("#randomizeBtn");
+
+    // Footer year
+    yearEl.textContent = new Date().getFullYear();
+
+    // Smooth scroll shortcuts
+    scrollDashboardBtn.addEventListener("click", () => {
+      document.querySelector("#dashboard").scrollIntoView({behavior:"smooth", block:"start"});
+    });
+    backToTopBtn.addEventListener("click", () => {
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+
+    // Search filter (filters table by service name)
+    if (searchInput) {
+      searchInput.addEventListener("input", (e) => {
+        const q = e.target.value.trim().toLowerCase();
+        for (const row of serviceTable.querySelectorAll("tr")) {
+          const service = row.children[0].textContent.toLowerCase();
+          row.style.display = service.includes(q) ? "" : "none";
+        }
+      });
+    }
+
+    // Modal controls
+    function openModal(){
+      backdrop.style.display = "block";
+      backdrop.setAttribute("aria-hidden", "false");
+      $("#closeModalBtn").focus();
+    }
+    function closeModal(){
+      backdrop.style.display = "none";
+      backdrop.setAttribute("aria-hidden", "true");
+    }
+    openModalBtn.addEventListener("click", openModal);
+    openModalBtn2.addEventListener("click", openModal);
+    closeModalBtn.addEventListener("click", closeModal);
+
+    // Click outside closes modal
+    backdrop.addEventListener("click", (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+    // Escape closes modal
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && backdrop.style.display === "block") closeModal();
+    });
+
+    // Toast
+    let toastTimer = null;
+    function showToast(msg){
+      toastEl.textContent = msg;
+      toastEl.style.display = "block";
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.style.display = "none", 2600);
+    }
+    toastBtn.addEventListener("click", () => showToast("✅ Toast: action completed"));
+
+    // KPI randomizer
+    function randInt(min, max){ return Math.floor(Math.random() * (max - min + 1)) + min; }
+    function randPct(min, max){ return (Math.random() * (max - min) + min).toFixed(2) + "%"; }
+    randomizeBtn.addEventListener("click", () => {
+      $("#kpi1").textContent = randInt(600, 2500).toLocaleString();
+      $("#kpi2").textContent = randPct(92, 99.99);
+      $("#kpi3").textContent = randInt(80, 380) + "ms";
+      $("#kpi4").textContent = randInt(40, 95) + "%";
+      showToast("🎲 KPIs randomized");
+    });
+
+    // Table actions
+    $("#markAllHealthy").addEventListener("click", () => {
+      for (const row of serviceTable.querySelectorAll("tr")) {
+        row.children[3].innerHTML = '<span class="status"><span class="dot"></span>Healthy</span>';
+      }
+      showToast("🟢 All services healthy");
+    });
+
+    $("#simulateIncident").addEventListener("click", () => {
+      const rows = [...serviceTable.querySelectorAll("tr")];
+      // Mark a random service as incident
+      const r = rows[randInt(0, rows.length - 1)];
+      r.children[3].innerHTML = '<span class="status"><span class="dot bad"></span>Incident</span>';
+      showToast("🚨 Incident simulated");
+    });
+
+    // Contact form validation
+    const form = $("#contactForm");
+    const status = $("#formStatus");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      status.textContent = "";
+
+      const name = $("#name").value.trim();
+      const email = $("#email").value.trim();
+      const message = $("#message").value.trim();
+
+      const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+      if (!name) return status.textContent = "❌ Please enter your name.";
+      if (!email || !emailOk) return status.textContent = "❌ Please enter a valid email.";
+      if (!message) return status.textContent = "❌ Please write a message.";
+
+      status.textContent = "✅ Form looks good (demo only).";
+      showToast("📨 Message sent (demo)");
+      form.reset();
+    });
+
+    // Copy demo text
+    $("#copyDemoBtn").addEventListener("click", async () => {
+      const text = "Demo text copied from Nebula UI page ✨";
+      try{
+        await navigator.clipboard.writeText(text);
+        $("#copyStatus").textContent = "✅ Copied to clipboard!";
+        showToast("📋 Copied");
+      }catch{
+        $("#copyStatus").textContent = "⚠️ Clipboard blocked by browser permissions.";
+        showToast("⚠️ Could not copy");
+      }
+    });
+
+    // Settings buttons (demo only)
+    $("#saveSettingsBtn").addEventListener("click", () => {
+      const mode = $("#mode").value;
+      const density = $("#density").value;
+      $("#settingsStatus").textContent = `✅ Saved (demo): mode=${mode}, density=${density}`;
+      showToast("💾 Settings saved (demo)");
+    });
+    $("#resetSettingsBtn").addEventListener("click", () => {
+      $("#mode").value = "default";
+      $("#density").value = "comfortable";
+      $("#settingsStatus").textContent = "↩️ Reset to defaults.";
+      showToast("↩️ Reset");
+    });
+  </script>
+</body>
+</html>
