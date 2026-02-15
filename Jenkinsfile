@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone') {
             steps {
-                git 'https://github.com/deepak-c2004/index.git'
+                git branch: 'main', url: 'https://github.com/deepak-c2004/index.git'
             }
         }
         stage('Build') {
