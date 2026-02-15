@@ -41,30 +41,19 @@ pipeline {
       }
     }
 
-    stage('ssh into remote'){
-      steps{
-        sh'''
-          ssh -i ~/.ssh/id_rsa ubuntu@54.226.250.46
-        '''
-      }
-    }
-
-    stage('Login to remoteDockerHub') {
+    stage('Deploy to Remote Server') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
-          sh '''
-            echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
-          '''
+          sh """
+            ssh -o StrictHostKeyChecking=no ubuntu@54.226.250.46 '
+              echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin &&
+              docker pull deepakc742004/myapp:latest &&
+              docker stop myapp || true &&
+              docker rm myapp || true &&
+              docker run -d -p 8080:80 --name myapp deepakc742004/myapp:latest
+            '
+          """
         }
-      }
-    }
-
-    stage('pull image and run container'){
-      steps{
-        sh'''
-          sudo docker pull deepakc742004/myapp:latest
-          sudo docker run -d -p 8080:8080 deepakc742004/myapp:latest
-        '''
       }
     }
   }
