@@ -45,7 +45,7 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
           sh """
-            ssh -o StrictHostKeyChecking=no ubuntu@54.226.250.46 '
+            ssh -o StrictHostKeyChecking=no ubuntu@35.172.178.88 '
               echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin &&
               docker pull deepakc742004/myapp:latest &&
               docker stop myapp || true &&
