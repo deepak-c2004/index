@@ -40,15 +40,32 @@ pipeline {
         '''
       }
     }
-  }
 
-  post {
-    always {
-      sh 'docker logout || true'
+    stage('ssh into remote'){
+      steps{
+        sh'''
+          ssh -i ~/.ssh/id_rsa ubuntu@54.226.250.46
+        '''
+      }
     }
-    cleanup {
-      // optional: avoid filling disk on long-running Jenkins
-      sh 'docker image prune -f || true'
+
+    stage('Login to remoteDockerHub') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
+          sh '''
+            echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin
+          '''
+        }
+      }
+    }
+
+    stage('pull image and run container'){
+      steps{
+        sh'''
+          sudo docker pull deepakc742004/myapp:latest
+          sudo docker run -d -p 8080:8080 deepakc742004/myapp:latest
+        '''
+      }
     }
   }
 }
