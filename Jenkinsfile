@@ -40,27 +40,19 @@ pipeline {
         '''
       }
     }
-    stage('Kubeconfig') {
-  steps {
-    sh '''
-      aws eks update-kubeconfig --region us-east-1 --name my-cl --kubeconfig /var/lib/jenkins/.kube/config
-      kubectl config current-context
-      kubectl get nodes
-    '''
-  }
-}
-
-
     stage('Deploy to EKS') {
   steps {
     sh '''
+      mkdir -p .kube
+      aws eks update-kubeconfig --region us-east-1 --name my-cl --kubeconfig $WORKSPACE/.kube/config
+      export KUBECONFIG=$WORKSPACE/.kube/config
+
+      kubectl get nodes
       kubectl apply -f deployment.yaml
       kubectl apply -f service.yaml
     '''
   }
 }
-
-
 
   }
 }
