@@ -43,7 +43,7 @@ pipeline {
 
     stage('Deploy to Remote Server') {
   steps {
-    sshagent(credentials: ['ec2-ssh-key']) {
+    sshagent(credentials: ['ssh']) {
       sh '''
         ssh -o StrictHostKeyChecking=no ubuntu@34.228.57.113 '
           echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin &&
