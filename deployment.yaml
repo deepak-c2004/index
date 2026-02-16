@@ -6,15 +6,15 @@ spec:
   replicas: 3 
   selector:
     matchLabels:
-      app: my-app
+      app: myapp
   template:
     metadata:
       labels:
-        app: my-app   
+        app: myapp   
     spec:
       containers:   
       - name: my-container
-        image: deepakc742004/my-app:latest
+        image: deepakc742004/myapp:latest
         ports:
         - containerPort: 80
       
