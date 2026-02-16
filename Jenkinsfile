@@ -40,6 +40,16 @@ pipeline {
         '''
       }
     }
+    stage('Kubeconfig') {
+  steps {
+    sh '''
+      aws eks update-kubeconfig --region us-east-1 --name <YOUR_CLUSTER_NAME> --kubeconfig /var/lib/jenkins/.kube/config
+      kubectl config current-context
+      kubectl get nodes
+    '''
+  }
+}
+
 
     stage('Deploy to EKS') {
   steps {
