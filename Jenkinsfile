@@ -42,19 +42,20 @@ pipeline {
     }
 
     stage('Deploy to Remote Server') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'docker', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
-          sh """
-            ssh -o StrictHostKeyChecking=no ubuntu@34.228.57.113 '
-              echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin &&
-              docker pull deepakc742004/myapp:latest &&
-              docker stop myapp || true &&
-              docker rm myapp || true &&
-              docker run -d -p 8080:80 --name myapp deepakc742004/myapp:latest
-            '
-          """
-        }
-      }
+  steps {
+    sshagent(credentials: ['ec2-ssh-key']) {
+      sh '''
+        ssh -o StrictHostKeyChecking=no ubuntu@34.228.57.113 '
+          echo "$DH_PASS" | docker login -u "$DH_USER" --password-stdin &&
+          docker pull deepakc742004/myapp:latest &&
+          docker stop myapp || true &&
+          docker rm myapp || true &&
+          docker run -d -p 8080:80 --name myapp deepakc742004/myapp:latest
+        '
+      '''
     }
+  }
+}
+
   }
 }
